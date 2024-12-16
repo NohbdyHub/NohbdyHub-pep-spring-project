@@ -2,6 +2,7 @@ package com.example.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.entity.Account;
 import com.example.entity.Message;
 import com.example.exception.UsernameExistsException;
+import com.example.service.AccountService;
+import com.example.service.MessageService;
 import com.example.exception.UnauthorizedException;
 
 /**
@@ -26,45 +29,49 @@ import com.example.exception.UnauthorizedException;
  */
 @RestController
 public class SocialMediaController {
+    @Autowired
+    private MessageService messageService;
+    @Autowired
+    private AccountService accountService;
     
     @PostMapping("/register")
     public Account register(@RequestBody Account newAccount) {
-        return null;
+        return accountService.insertAccount(newAccount.getUsername(), newAccount.getPassword());
     }
 
     @PostMapping("/login")
     public Account login(@RequestBody Account loggingIn) {
-        return null;
+        return accountService.getAccountByCredentials(loggingIn.getUsername(), loggingIn.getPassword());
     }
 
     @PostMapping("/messages")
     public Message addMessage(@RequestBody Message toPost) {
-        return null;
+        return messageService.insertMessage(toPost);
     }
 
     @GetMapping("/messages")
     public List<Message> getMessages() {
-        return null;
+        return messageService.getAllMessages();
     }
 
     @GetMapping("/messages/{message_id}")
-    public List<Message> getMessageByID(@PathVariable long message_id) {
-        return null;
+    public List<Message> getMessageByID(@PathVariable int message_id) {
+        return messageService.getAllMessagesByUserID(message_id);
     }
 
     @DeleteMapping("/messages/{message_id}")
-    public Message deleteMessageByID(@PathVariable long message_id) {
-        return null;
+    public Message deleteMessageByID(@PathVariable int message_id) {
+        return messageService.deleteMessageByID(message_id);
     }
 
     @PatchMapping("/messages/{message_id}")
-    public int patchMessageByID(@PathVariable long message_id) {
-        return 0;
+    public Message patchMessageByID(@PathVariable int message_id, @RequestBody Message updatedMessage) {
+        return messageService.patchMessageByID(message_id, updatedMessage.getMessageText());
     }
 
     @GetMapping("/accounts/{account_id}/messages")
-    public List<Message> getMessagesByUser(@PathVariable long account_id) {
-        return null;
+    public List<Message> getMessagesByUser(@PathVariable int account_id) {
+        return messageService.getAllMessagesByUserID(account_id);
     }
 
     @ExceptionHandler(UsernameExistsException.class)
