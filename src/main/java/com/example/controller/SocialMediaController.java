@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,6 @@ import com.example.entity.Message;
 import com.example.exception.UsernameExistsException;
 import com.example.service.AccountService;
 import com.example.service.MessageService;
-import com.example.exception.UnauthorizedException;
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller using Spring. The endpoints you will need can be
@@ -78,7 +78,7 @@ public class SocialMediaController {
     @ResponseStatus(HttpStatus.CONFLICT)
     public void handleConflict() { }
 
-    @ExceptionHandler(UnauthorizedException.class)
+    @ExceptionHandler(NoSuchElementException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public void handleUnauthorized() { }
 
