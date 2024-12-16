@@ -55,17 +55,17 @@ public class SocialMediaController {
     }
 
     @GetMapping("/messages/{message_id}")
-    public List<Message> getMessageByID(@PathVariable int message_id) {
-        return messageService.getAllMessagesByUserID(message_id);
+    public Message getMessageByID(@PathVariable int message_id) {
+        return messageService.getMessageByID(message_id);
     }
 
     @DeleteMapping("/messages/{message_id}")
-    public Message deleteMessageByID(@PathVariable int message_id) {
+    public Integer deleteMessageByID(@PathVariable int message_id) {
         return messageService.deleteMessageByID(message_id);
     }
 
     @PatchMapping("/messages/{message_id}")
-    public Message patchMessageByID(@PathVariable int message_id, @RequestBody Message updatedMessage) {
+    public Integer patchMessageByID(@PathVariable int message_id, @RequestBody Message updatedMessage) {
         return messageService.patchMessageByID(message_id, updatedMessage.getMessageText());
     }
 
